@@ -72,7 +72,7 @@
     - update
 
 - name: Setup startup file
-  copy: src=kalite.service dest=/etc/systemd/system/kalite.service
+  copy: src=kalite.service dest=/etc/systemd/system/kalite.service remote_src=true
   tags: ['custom', 'update']
 
 - name: Enable service kalite

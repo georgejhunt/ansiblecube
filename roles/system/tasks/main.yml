@@ -41,7 +41,7 @@
 ## Maybe this could be pushed during preseed
 - name: Make sure central_server pubkey is in known_hosts
   copy: src=ssh_known_hosts dest=/etc/ssh/ssh_known_hosts
-          owner=root group=root mode=0644
+          owner=root group=root mode=0644 remote_src=true
   tags: ['custom','update','rename']
 
 - name: Send this file over the central_server
@@ -50,7 +50,7 @@
   tags: ['custom','rename']
 
 - name: Drop a complete source.list
-  copy: src=source.list dest=/etc/apt/sources.list
+  copy: src=source.list dest=/etc/apt/sources.list remote_src=true
   tags: ['master','update']
 
 - name: Run apt-get update  
@@ -248,28 +248,28 @@
   tags: ['master', 'update']
 
 - name: Copy a blank rc.local
-  copy: src=rc.local dest=/etc/rc.local owner=root group=root mode=0644 backup=yes
+  copy: src=rc.local dest=/etc/rc.local owner=root group=root mode=0644 backup=yes remote_src=true
   tags:
     - master
 
 - name: Copy .bashrc for root
-  copy: src=bashrc dest=/root/.bashrc owner=root
+  copy: src=bashrc dest=/root/.bashrc owner=root remote_src=true
   tags:
     - master
 
 - name: Copy the global vimrc file
-  copy: src=vimrc.local dest=/etc/vim/vimrc.local owner=root mode=0644
+  copy: src=vimrc.local dest=/etc/vim/vimrc.local owner=root mode=0644 remote_src=true
   tags:
     - master
 
 - name: Copy .bashrc for new username
-  copy: src=bashrc dest=/home/{{ username }}/.bashrc owner={{ username }}
+  copy: src=bashrc dest=/home/{{ username }}/.bashrc owner={{ username }} remote_src=true
   tags:
     - master
 
 - name: Copy visudo file for ideascube user
   template: src=visudo.j2 dest=/etc/sudoers.d/shutdown
-    owner=root group=root mode=0440 validate="/usr/sbin/visudo -cf %s"
+    owner=root group=root mode=0440 validate="/usr/sbin/visudo -cf %s" remote_src=true
   tags:
     - master
 
@@ -285,7 +285,7 @@
 
 - name: Copy ansible inventory file to client
   copy: src=hosts dest=/etc/ansible/hosts
-          owner=root group=root mode=0644
+          owner=root group=root mode=0644 remote_src=true
   tags:
     - master
 

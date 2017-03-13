@@ -56,6 +56,7 @@
     src=device_list.fact
     dest=/etc/ansible/facts.d/device_list.fact
     mode=0666
+    remote_src=true
   when: ansible_local.installed_software.management.own_config_file is defined
     and ansible_local.installed_software.management.own_config_file|bool == False
   tags: ['custom','update','rename']

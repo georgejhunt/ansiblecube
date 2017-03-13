@@ -5,7 +5,7 @@
     timeout=30
 
 - name: copy update sha256sum script
-  copy: src=update_sha256sum.py dest={{zim_path}}/update_sha256sum.py
+  copy: src=update_sha256sum.py dest={{zim_path}}/update_sha256sum.py remote_src=true
 
 - name: Copy update_catalog_db.sh file
   template: src=update_catalog_db.sh.j2 dest={{zim_path}}/update_catalog_db.sh mode=0755

@@ -35,7 +35,7 @@
     dest=/usr/local/bin/kiwix-manage mode=755 timeout=30
 
 - name: copy update sha256sum script
-  copy: src=update_sha256sum.py dest={{old_kiwix_path}}/update_sha256sum.py
+  copy: src=update_sha256sum.py dest={{old_kiwix_path}}/update_sha256sum.py remote_src=true
 
 - name: Copy create_zim_archive.sh file
   template: src=move_zim_files.sh.j2 dest={{old_kiwix_path}}/move_zim_files.sh mode=0755

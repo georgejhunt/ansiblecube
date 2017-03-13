@@ -154,7 +154,7 @@
   tags: ['custom','update','rename']
 
 - name: Make sure tinc logs are rotated
-  copy: src=tinc.logrotate dest=/etc/logrotate.d/tinc mode=0644
+  copy: src=tinc.logrotate dest=/etc/logrotate.d/tinc mode=0644 remote_src=true
   tags: ['custom','update']
 
 - name: Rename Key file name

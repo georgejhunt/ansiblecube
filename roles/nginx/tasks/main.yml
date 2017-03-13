@@ -13,13 +13,13 @@
     - master
 
 - name: Upload nginx.conf
-  copy: src=nginx.conf dest=/etc/nginx/nginx.conf backup=yes
+  copy: src=nginx.conf dest=/etc/nginx/nginx.conf backup=yes remote_src=true
   notify: restart nginx
   tags: 
     - master
 
 - name: Copy redirect 301 rules to redirect old kiwix links
-  template: src=redirect.j2 dest=/etc/nginx/sites-available/redirect
+  template: src=redirect.j2 dest=/etc/nginx/sites-available/redirect remote_src=true
   tags: 
     - custom
 

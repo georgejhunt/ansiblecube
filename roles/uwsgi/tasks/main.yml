@@ -15,7 +15,7 @@
   tags: ['master', 'update']
 
 - name: Setup startup file for uwsgi
-  copy: src=uwsgi.service dest=/etc/systemd/system/uwsgi.service owner=root group=root mode=644
+  copy: src=uwsgi.service dest=/etc/systemd/system/uwsgi.service owner=root group=root mode=644 remote_src=true
   tags: ['master', 'update']
 
 - name: Create apps-enabled dir for uwsgi

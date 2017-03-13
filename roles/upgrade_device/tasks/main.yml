@@ -21,7 +21,7 @@
 
 - name: Create entry to clone/pull git repository
   copy: src=../../network-manager/files/nm-dispatcher dest=/etc/NetworkManager/dispatcher.d/ansiblePullUpdate
-    owner=root group=root mode=0755
+    owner=root group=root mode=0755 remote_src=true
 
 - name: remove old way of launching ansible-pull
   file: path=/etc/dhcp/dhclient-exit-hooks.d/ansiblePullUpdate state=absent

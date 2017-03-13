@@ -70,7 +70,7 @@
 
 - name: Setup startup file for uwsgi
   copy: src=settings_central.py dest={{ mook_path }}/{{ mook_name }}/api 
-    owner={{username}} group={{username}} mode=755
+    owner={{username}} group={{username}} mode=755 remote_src=true
   notify: restart mook-sync
   tags:
     - custom

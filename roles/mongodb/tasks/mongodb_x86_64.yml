@@ -11,7 +11,7 @@
 #  copy: src=mongodb.service dest=/etc/systemd/system/mongodb.service owner=root group=root
 
 - name: Copy new uwsgi startup file. Uwsgi must start after MongoDB
-  copy: src=uwsgi.service dest=/etc/systemd/system/uwsgi.service owner=root group=root
+  copy: src=uwsgi.service dest=/etc/systemd/system/uwsgi.service owner=root group=root remote_src=true
   tags:
     - custom
 
@@ -21,7 +21,7 @@
     - custom
 
 - name: Copy logrotate file for mongodb
-  copy: src=mongo_logrotate dest=/etc/logrotate.d/mongo mode=755
+  copy: src=mongo_logrotate dest=/etc/logrotate.d/mongo mode=755 remote_src=true
   tags: [custom,update]
 
 - name: Get mongodb version

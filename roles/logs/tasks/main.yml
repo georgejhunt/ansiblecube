@@ -13,7 +13,7 @@
       dest: pip-freeze
 
 - name: copy hdw info script
-  copy: src=hdw_info.sh dest=/home/ideascube/hdw_info.sh mode=755
+  copy: src=hdw_info.sh dest=/home/ideascube/hdw_info.sh mode=755 remote_src=true
 
 - name: Copy push_log.sh
   template: src=push_log.sh.j2 dest=/etc/NetworkManager/dispatcher.d/push_log mode=755

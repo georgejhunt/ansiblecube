@@ -39,7 +39,7 @@
   tags: ['custom','update']
 
 - name: Add pinning for linux-u-boot-lime2-next package == DOT NOT UPGRADE THIS PACKAGE
-  copy: src=u-boot.apt-pin dest=/etc/apt/preferences.d/u-boot
+  copy: src=u-boot.apt-pin dest=/etc/apt/preferences.d/u-boot remote_src=true
   tags: ['custom','update']
 
 - name: Light LED at u-boot start
@@ -72,7 +72,7 @@
   tags: ['custom','update']
 
 - name: Copy fex.file
-  template: src=lime2.fex.j2 dest=/boot/bin/lime2.fex
+  template: src=lime2.fex.j2 dest=/boot/bin/lime2.fex remote_src=true
   when: ansible_kernel | version_compare('4', '<')
   tags:
     - custom

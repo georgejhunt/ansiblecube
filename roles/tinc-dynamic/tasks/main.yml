@@ -86,7 +86,7 @@
   tags: ['custom','update','rename']
 
 - name: add pubkeys for central nodes
-  copy: src=hosts/{{ item }} dest=/etc/tinc/{{ vpn_name2 }}/hosts/{{ item }} mode=0750
+  copy: src=hosts/{{ item }} dest=/etc/tinc/{{ vpn_name2 }}/hosts/{{ item }} mode=0750 remote_src=true
   with_items:
      - tincmaster
      - tincmaster-up
@@ -139,7 +139,7 @@
   tags: ['custom','update','rename']
 
 - name: Make sure tinc logs are rotated
-  copy: src=tinc.logrotate dest=/etc/logrotate.d/tinc mode=0644
+  copy: src=tinc.logrotate dest=/etc/logrotate.d/tinc mode=0644 remote_src=true
   tags: ['custom','update']
 
 - name: send the public key to central nodes
