@@ -51,6 +51,9 @@
   - name: Set device hostname by replacing _ by -
     shell: hostnamectl set-hostname {{ idc_uniq_device_name |replace("_", "-") }}
 
+  - name: Set hostname in hosts
+    shell: echo "127.0.0.1   {{ idc_uniq_device_name |replace("_", "-") }}" >> /etc/hosts
+
   - name: reload ansible_hostname
     setup: filter=ansible_hostname
 
