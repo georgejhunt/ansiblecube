@@ -48,6 +48,10 @@
       when: ansible_local.device_list[generic_project_name].kalite is defined
         and ansible_local.device_list[generic_project_name].kalite.activated|bool == True
 
+    - role: aflatoun
+      when: ansible_local.device_list[generic_project_name].aflatoun is defined
+        and ansible_local.device_list[generic_project_name].aflatoun.activated|bool == True
+
     - role: kolibri
       when: ansible_local.device_list[generic_project_name].kolibri is defined
         and ansible_local.device_list[generic_project_name].kolibri.activated|bool == True

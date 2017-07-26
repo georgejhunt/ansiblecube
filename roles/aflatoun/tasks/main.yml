@@ -1,0 +1,83 @@
+---
+- include_vars: group_vars/{{ ansible_architecture }}.yml
+  tags: ["custom"]
+
+- name: Ensure aflatoun is stopped if service exist
+  service: name=aflatoun state=stopped
+  ignore_errors: yes
+  tags: ["custom"]
+
+- name: Create a working dir aflatoun
+  file: path=/home/{{ username }}/.aflatoun state=directory
+  tags: ["custom"]
+
+- name: Download Aflatoun
+  get_url:
+    url: https://thiolliere.org/public/ka-lite-static-0.16.7b3.tar.gz
+    dest: /tmp/ka-lite-static-0.16.7b3.tar.gz
+  tags: ["custom"]
+
+- name: Install Aflatoun
+  pip: name=/tmp/ka-lite-static-0.16.7b3.tar.gz
+    chdir=/home/{{ username }}/.aflatoun
+    virtualenv_command=/usr/bin/virtualenv
+    virtualenv=/home/{{ username }}/.aflatoun/env
+  tags: ["custom"]
+
+- name: Give rights to ideascube
+  command: chown -R {{ username }}:{{ username }} /home/{{ username }}/.aflatoun
+  tags: ["custom"]
+
+- name: Create a user admin for aflatoun
+  become: yes
+  become_user: ideascube
+  shell: KALITE_PYTHON=/home/ideascube/.aflatoun/env/bin/python KALITE_HOME=/home/ideascube/.aflatoun/ /home/ideascube/.aflatoun/env/bin/kalite manage setup --username=admin --password=admin --noinput --no-assessment-items
+  tags: ["custom"]
+
+- block:
+
+  - name: Set aflatoun content
+    unarchive:
+      src: https://thiolliere.org/public/content.tar.gz
+      dest: /home/ideascube/.aflatoun/
+      remote_src: True
+      owner: ideascube
+
+  - name: Download Aflatoun language pack
+    get_url:
+      url: https://thiolliere.org/public/{{ item }}.zip
+      dest: /tmp/{{ item }}.zip
+    with_items:
+      - fr
+      - en
+
+  - name: Retrieve Aflatoun language pack
+    become: yes
+    become_user: ideascube
+    shell: KALITE_PYTHON=/home/ideascube/.aflatoun/env/bin/python KALITE_HOME=/home/ideascube/.aflatoun/ /home/ideascube/.aflatoun/env/bin/kalite manage retrievecontentpack local {{ item }} /tmp/{{ item }}.zip
+    with_items:
+      - fr
+      - en
+
+  tags: ["custom"]
+
+- name: Setup startup file
+  copy: src=aflatoun.service dest=/etc/systemd/system/aflatoun.service
+  tags: ["custom"]
+
+- name: Enable and Start Aflatoun
+  systemd:
+    name=aflatoun
+    state=started
+    daemon_reload=yes
+    enabled=yes
+  tags: ["custom"]
+
+- name: Copy nginx vhost
+  template: src=aflatoun.vhost.j2 dest=/etc/nginx/sites-available/aflatoun
+  tags: ["custom"]
+
+- name: Nginx enable Virtual host
+  file: src=/etc/nginx/sites-available/aflatoun dest=/etc/nginx/sites-enabled/aflatoun state=link
+  notify: restart nginx
+  tags: ["custom"]
