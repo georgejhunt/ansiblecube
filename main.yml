@@ -52,6 +52,10 @@
       when: ansible_local.device_list[generic_project_name].aflatoun is defined
         and ansible_local.device_list[generic_project_name].aflatoun.activated|bool == True
 
+    - role: edupi
+      when: ansible_local.device_list[generic_project_name].edupi is defined
+        and ansible_local.device_list[generic_project_name].edupi.activated|bool == True
+
     - role: kolibri
       when: ansible_local.device_list[generic_project_name].kolibri is defined
         and ansible_local.device_list[generic_project_name].kolibri.activated|bool == True
