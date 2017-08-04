@@ -31,6 +31,7 @@ zim_path: /var/ideascube/kiwix
 #Domaine name
 kalite_server_name: khanacademy.{{hostname}}
 aflatoun_server_name: aflatoun.{{hostname}}
+edupi_server_name: edupi.{{hostname}}
 kolibri_server_name: kolibri.{{hostname}}
 appinventor_server_name: appinventor.{{hostname}}
 
