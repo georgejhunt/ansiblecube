@@ -34,6 +34,7 @@ aflatoun_server_name: aflatoun.{{hostname}}
 edupi_server_name: edupi.{{hostname}}
 kolibri_server_name: kolibri.{{hostname}}
 appinventor_server_name: appinventor.{{hostname}}
+wikifundi_server_name: wikifundi.{{hostname}}
 
 #Preprod vars
 crashbook_dns_domain: "cloud.online.net"
