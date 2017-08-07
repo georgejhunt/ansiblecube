@@ -52,6 +52,10 @@
       when: ansible_local.device_list[generic_project_name].aflatoun is defined
         and ansible_local.device_list[generic_project_name].aflatoun.activated|bool == True
 
+    - role: wikifundi
+      when: ansible_local.device_list[generic_project_name].wikifundi is defined
+        and ansible_local.device_list[generic_project_name].wikifundi.activated|bool == True
+
     - role: edupi
       when: ansible_local.device_list[generic_project_name].edupi is defined
         and ansible_local.device_list[generic_project_name].edupi.activated|bool == True
