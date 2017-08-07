@@ -1,0 +1,98 @@
+---
+- include_vars: group_vars/{{ ansible_architecture }}.yml
+  tags: ["custom"]
+
+- name: Create a working dir wikifundi
+  file: path=/home/{{ username }}/.wikifundi state=directory owner=ideascube
+  tags: ["custom"]
+
+- name: Install dependencies
+  apt: name={{ item }} state=latest
+  with_items:
+    - nginx
+    - php5-fpm
+    - memcached
+    - nodejs
+    - imagemagick
+    - texlive
+    - texlive-latex-extra
+    - php-pear
+    - php5-curl
+    - php5-sqlite
+    - libav-tools
+    - librsvg2-bin
+    - poppler-utils
+    - npm
+    - redis-server
+    - dvipng
+    - lua5.1
+    - build-essential
+    - ocaml
+    - cjk-latex
+    - texlive-fonts-recommended
+    - texlive-lang-greek
+    - texlive-latex-recommended
+  tags: ['custom']
+
+- name: Link node to nodejs binary
+  file: src=/usr/bin/nodejs dest=/usr/bin/node state=link
+  tags: ['custom']
+
+- name: Download afriapack
+  unarchive:
+    src: http://download.kiwix.org/other/wikifundi/fr.africapack.kiwix.org_2016-08.tar.bz2
+    dest: /var/www
+    remote_src: True
+    owner: www-data
+  tags: ['custom']
+
+- name: Change lua path and TMP in LocalSettings.custom.php
+  replace:
+    name: /www/var/fr.africapack.kiwix.org/w/LocalSettings.custom.php
+    regexp: '^\<\?php$'
+    replace: '<?php\nputenv("TMP={$wgUploadDirectory}/temp");\n$wgScribuntoEngineConf[''luastandalone''][''luaPath''] = "/usr/bin/lua5.1";'
+  tags: ['custom']
+
+- name: Get the Math renderer correctly
+  shell:
+    cd /var/www/fr.africapack.kiwix.org/w/extensions/Math/math;
+    sudo make clean all;
+    cd /var/www/fr.africapack.kiwix.org/w/extensions/Math/texvccheck;
+    sudo make clean all;
+
+- name: Download Parsoid
+  unarchive:
+    src: http://download.kiwix.org/other/wikifundi/parsoid_2016-08.tar.bz2
+    dest: /var/www
+    remote_src: True
+    owner: www-data
+  tags: ['custom']
+
+- name: Setup parsoid service
+  copy: src=parsoid.service dest=/etc/systemd/system/parsoid.service
+  tags: ['custom']
+
+- name: Enable and Start Parsoid
+  systemd:
+    name=parsoid
+    state=started
+    daemon_reload=yes
+    enabled=yes
+  tags: ["custom"]
+
+- name: Enable and Start php-fpm
+  systemd:
+    name=php-fpm
+    state=started
+    daemon_reload=yes
+    enabled=yes
+  tags: ["custom"]
+
+- name: Copy nginx vhost
+  template: src=wikifundi.vhost.j2 dest=/etc/nginx/sites-available/wikifundi
+  tags: ['custom']
+
+- name: Nginx enable Virtual host
+  file: src=/etc/nginx/sites-available/wikifundi dest=/etc/nginx/sites-enabled/wikifundi state=link
+  notify: restart nginx
+  tags: ['custom']
