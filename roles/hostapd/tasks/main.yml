@@ -27,7 +27,7 @@
   tags: ['master', 'custom']
 
 - name: Copy hostapd.conf file
-  template: src=hostapd.conf.j2 dest=/etc/hostapd/hostapd.conf owner=root group=root mode=755
+  template: src=hostapd.conf.orig.j2 dest=/etc/hostapd/hostapd.conf.orig owner=root group=root mode=755
   tags: ['master', 'custom','rename']
 
 - name: Copy startup script
@@ -46,7 +46,7 @@
     - custom
 
 - name: Enable 802.11n
-  lineinfile: dest=/etc/hostapd/hostapd.conf
+  lineinfile: dest=/etc/hostapd/hostapd.conf.orig
               regexp='ieee80211n=1'
               line='ieee80211n=1'
               insertafter='EOF'
@@ -54,7 +54,7 @@
   tags: ['custom', 'update']
 
 - name: Enable 802.11n
-  lineinfile: dest=/etc/hostapd/hostapd.conf
+  lineinfile: dest=/etc/hostapd/hostapd.conf.orig
               regexp='wmm_enabled=1'
               line='wmm_enabled=1'
               insertafter='EOF'
