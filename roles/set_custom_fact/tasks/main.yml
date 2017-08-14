@@ -72,7 +72,7 @@
 
 - block:
   - name: Check if device name match a known name in device_list.fact
-    command: grep -w {{ ansible_hostname | regex_replace('-\d+', '') }} /etc/ansible/facts.d/device_list.fact
+    command: grep -w {{ ansible_hostname }} /etc/ansible/facts.d/device_list.fact
 
   rescue:
   - fail: msg="Device name does not correspond to any records in /etc/ansible/facts.d/device_list.fact"
@@ -137,7 +137,7 @@
   tags: ['custom','rename']
 
 - name: Set variable generic_project_name
-  set_fact: generic_project_name={{ ansible_hostname | regex_replace('-\d+', '') }}
+  set_fact: generic_project_name={{ ansible_hostname }}
   tags: [ 'master', 'custom', 'rename', 'update','idc_import','package_management','kalite_import' ]
 
 - name: Stat /dev/sda1

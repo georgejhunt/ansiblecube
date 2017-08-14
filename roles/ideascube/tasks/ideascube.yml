@@ -73,32 +73,30 @@
     - update
 
 # Add settings and conf
-- name: Check if configuration file exist for Ideascube
-  stat: path=/opt/venvs/ideascube/lib/python3.4/site-packages/ideascube/conf/{{ generic_project_name |replace("-", "_") }}.py
-  register: conf_file
-  tags: ['custom','rename','update']
+# - name: Check if configuration file exist for Ideascube
+#   stat: path=/opt/venvs/ideascube/lib/python3.4/site-packages/ideascube/conf/{{ generic_project_name |replace("-", "_") }}.py
+#   register: conf_file
+#   tags: ['custom','rename','update']
 
-- name: Set IDEASCUBE_ID variable
-  set_fact: ideascube_id={{ generic_project_name |replace("-", "_") }}
-  when: conf_file.stat.exists == True
-  tags:
-    - update
+# - name: Set IDEASCUBE_ID variable
+#   set_fact: ideascube_id={{ generic_project_name |replace("-", "_") }}
+#   when: conf_file.stat.exists == True
+#   tags:
+#     - update
 
-- name: Set IDEASCUBE_ID variable
-  set_fact: ideascube_id={{ ideascube_project_name }}
-  when: conf_file.stat.exists == True
-  tags: ['custom','rename']
+# - name: Set IDEASCUBE_ID variable
+#   set_fact: ideascube_id={{ ideascube_project_name }}
+#   when: conf_file.stat.exists == True
+#   tags: ['custom','rename']
 
 - name: Set IDEASCUBE_ID variable for koombook
   set_fact: ideascube_id=kb
-  when: (ansible_architecture == 'armhf' or ansible_architecture == 'armv7l')
-    and conf_file.stat.exists == False
   tags: ['custom','rename','update']
 
-- name: Set IDEASCUBE_ID variable for ideasbox
-  set_fact: ideascube_id=idb
-  when: (ansible_architecture == 'x86_64' or ansible_architecture == 'i386') and conf_file.stat.exists == False
-  tags: ['custom','rename','update']
+# - name: Set IDEASCUBE_ID variable for ideasbox
+#   set_fact: ideascube_id=idb
+#   when: (ansible_architecture == 'x86_64' or ansible_architecture == 'i386') and conf_file.stat.exists == False
+#   tags: ['custom','rename','update']
 
 - name: Change IDEASCUBE_ID
   lineinfile: dest=/etc/default/ideascube
