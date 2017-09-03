@@ -49,16 +49,6 @@
       generic_project_name={{ ideascube_project_name |replace("_", "-") }}
 
   - name: Set device hostname by replacing _ by -
-    shell: hostnamectl set-hostname {{ idc_uniq_device_name |replace("_", "-") }}
-
-  - name: reload ansible_hostname
-    setup: filter=ansible_hostname
-
-  rescue:
-
-  - debug: msg="No bus connection is available yet, set hostname manually"
-
-  - name: Set device hostname by replacing _ by -
     shell: echo {{ idc_uniq_device_name |replace("_", "-") }} > /etc/hostname
 
   - name: reload ansible_hostname
