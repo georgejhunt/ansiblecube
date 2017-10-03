@@ -26,7 +26,7 @@
   tags: ['custom','update','rename']
 
 - name: reload ansible_local
-  setup: filter=ansible_local
+  setup: filter=ansible_local gather_timeout=120
   tags: ['custom', 'rename', 'update','idc_import','package_management','kalite_import' ]
 
 - name: install custom fact module for device list
@@ -52,7 +52,7 @@
     shell: echo {{ idc_uniq_device_name |replace("_", "-") }} > /etc/hostname
 
   - name: reload ansible_hostname
-    setup: filter=ansible_hostname
+    setup: filter=ansible_hostname gather_timeout=120
 
   when: firststart.stat.exists == false or firststart is undefined
   tags: ['master','custom','rename']
@@ -108,7 +108,7 @@
   tags: ['custom','update','rename']
 
 - name: reload ansible_local
-  setup: filter=ansible_local
+  setup: filter=ansible_local gather_timeout=120
   tags: [ 'master', 'custom', 'rename', 'update','idc_import','package_management','kalite_import' ]
 
 - name: Write all the variables in /etc/firstStart.csv

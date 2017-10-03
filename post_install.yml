@@ -5,7 +5,7 @@
             value={{ task_version }}
 
 - name: reload ansible_local
-  setup: filter=ansible_local
+  setup: filter=ansible_local gather_timeout=120
 
 - name: Push file to central_server
   shell: echo "{{ ansible_date_time["date"] }},{{ ansible_date_time["time"] }},{{ ansible_hostname }},{{ task }},{{ task_version }}" | ssh {{ central_server }} "cat >> ./ansible/installed_software/sofware_list.csv"
